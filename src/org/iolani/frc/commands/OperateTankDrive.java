@@ -27,6 +27,13 @@ public class OperateTankDrive extends CommandBase {
         double rot = oi.getLeftStick().getX();
         
         drivetrain.setHighGear(oi.getGearShiftButton().get());
+        
+        // signal conditioning //
+        /*PowerScaler scale = oi.getTankDriveScaler();
+        if(scale != null) {
+            mag = scale.get(mag);
+            rot = scale.get(rot);
+        }*/
         drivetrain.setArcade(mag, rot);
     }
 
