@@ -1,19 +1,23 @@
-
-package edu.wpi.first.wpilibj.templates.commands;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.iolani.frc.commands;
 
 /**
  *
- * @author bradmiller
+ * @author wkd
  */
-public class ExampleCommand extends CommandBase {
-
-    public ExampleCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+public class MaintainPneumaticPressure extends CommandBase {
+    
+    public MaintainPneumaticPressure() {
+        this.requires(pneumatics);
+        this.setRunWhenDisabled(true);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        pneumatics.setEnabled(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,10 +31,12 @@ public class ExampleCommand extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
+        pneumatics.setEnabled(false);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        this.end();
     }
 }
