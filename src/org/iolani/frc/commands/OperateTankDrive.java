@@ -12,6 +12,7 @@ import org.iolani.frc.util.PowerScaler;
  */
 public class OperateTankDrive extends CommandBase {
     
+    private static final double DEADBAND = 0.05;  
     
     public OperateTankDrive() {
         requires(drivetrain);
@@ -34,6 +35,9 @@ public class OperateTankDrive extends CommandBase {
             mag = scale.get(mag);
             rot = scale.get(rot);
         }*/
+        if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
+        if(Math.abs(rot) < DEADBAND) { rot = 0.0; }
+        
         drivetrain.setArcade(mag, rot);
     }
 
