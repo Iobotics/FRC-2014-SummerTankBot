@@ -1,6 +1,6 @@
 MIDlet-Name: FRC-2014-SummerTankBot
 MIDlet-Version: 1.0.0
 MIDlet-Vendor: FIRST
-MIDlet-1: RobotTemplate, , edu.wpi.first.wpilibj.templates.RobotTemplate
+MIDlet-1: SummerBot2014, , org.iolani.frc.SummerBot2014
 MicroEdition-Profile: IMP-1.0
 MicroEdition-Configuration: CLDC-1.1
