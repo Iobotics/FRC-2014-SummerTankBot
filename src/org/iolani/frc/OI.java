@@ -13,8 +13,10 @@ import org.iolani.frc.util.PowerScaler;
 public class OI {
     private final Joystick _lStick = new Joystick(1);
     private final Joystick _rStick = new Joystick(2);
+    private final Joystick _onboardStick = new Joystick(3);
     
     private final JoystickButton _gearShiftButton = new JoystickButton(_rStick, 1); 
+    private final JoystickButton _onboardGearShiftButton = new JoystickButton(_onboardStick, 1);
     
     private final PowerScaler _tankDriveScaler;
     
@@ -34,12 +36,20 @@ public class OI {
         return _gearShiftButton;
     }
     
+    public Button getOnboardGearShiftButton()  {
+        return _onboardGearShiftButton;
+    }
+    
     public Joystick getLeftStick()  {
         return _lStick;
     }
     
     public Joystick getRightStick() {
         return _rStick;
+    }
+    
+    public Joystick getOnboardStick()  {
+        return _onboardStick;
     }
     
     public PowerScaler getTankDriveScaler() {
