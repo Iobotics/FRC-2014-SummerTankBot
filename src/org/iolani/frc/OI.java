@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.iolani.frc.util.PowerScaler;
+import org.iolani.frc.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -17,6 +18,7 @@ public class OI {
     
     private final JoystickButton _gearShiftButton = new JoystickButton(_rStick, 1); 
     private final JoystickButton _onboardGearShiftButton = new JoystickButton(_onboardStick, 1);
+    private final JoystickButton _onboardDriveButton = new JoystickButton(_onboardStick, 2);
     
     private final PowerScaler _tankDriveScaler;
     
@@ -30,6 +32,9 @@ public class OI {
                 new PowerScaler.PowerPoint(0.05, 0.0),
                 new PowerScaler.PowerPoint(0.80, 1.0)
             });
+        
+        _onboardDriveButton.whenPressed(new OnboardOperateDriveTrain());
+        
     }
     
     public Button getGearShiftButton() {
