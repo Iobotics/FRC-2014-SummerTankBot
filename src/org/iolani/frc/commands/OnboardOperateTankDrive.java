@@ -10,11 +10,23 @@ import org.iolani.frc.util.PowerScaler;
  *
  * @author iobotics
  */
-public class OnboardOperateDriveTrain extends CommandBase {
-    
+public class OnboardOperateTankDrive extends CommandBase {
     private static final double DEADBAND = 0.05;  
+    private static final double KIDMAG = 0.50;
+    private static final double KIDROT = 0.65;
+    private static final double MAXMAGDELTA = 1.0 / 25;
+    private static final double MAXROTDELTA = 1.0 / 25;
     
-    public OnboardOperateDriveTrain() {
+    private final boolean _kidFriendly;
+    private double _lastMag = 0.0;
+    private double _lastRot = 0.0;
+    
+    public OnboardOperateTankDrive() {
+        this(false);
+    }
+    
+    public OnboardOperateTankDrive(boolean kidFriendly) {
+        _kidFriendly = kidFriendly;
         requires(drivetrain);
     }
 
@@ -35,6 +47,30 @@ public class OnboardOperateDriveTrain extends CommandBase {
             mag = scale.get(mag);
             rot = scale.get(rot);
         }*/
+        if(_kidFriendly)  {
+            mag *= KIDMAG;
+            rot *= KIDROT;
+        }
+        else {
+            double magDelta = mag - _lastMag;
+            double rotDelta = rot - _lastRot;
+            if(magDelta > MAXMAGDELTA) {
+                mag = _lastMag + MAXMAGDELTA;
+            }
+            else if(magDelta < -MAXMAGDELTA) {
+                mag = _lastMag - MAXMAGDELTA;
+            }
+            if(rotDelta > MAXROTDELTA) {
+                rot = _lastRot + MAXROTDELTA;
+            }
+            else if(rotDelta < -MAXROTDELTA) {
+                rot = _lastRot - MAXROTDELTA;
+            }
+            //System.out.println(mag + " , " + magDelta + " , " + _lastMag);
+            _lastMag = mag;
+            _lastRot = rot;
+        }
+        
         if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
         if(Math.abs(rot) < DEADBAND) { rot = 0.0; }
         
