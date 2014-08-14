@@ -59,8 +59,7 @@ public class OnboardOperateTankDrive extends CommandBase {
         
         if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
         if(Math.abs(rot) < DEADBAND) { rot = 0.0; }
-        
-        drivetrain.setArcade(mag, rot);
+        drivetrain.setArcade(mag * oi.getVariableDrivePower(), rot * oi.getVariableDrivePower());
     }
 
     // Make this return true when this Command no longer needs to run execute()
