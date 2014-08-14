@@ -21,17 +21,26 @@ public class OI {
     private final JoystickButton _onboardDriveButton = new JoystickButton(_onboardStick, 11);
     private final JoystickButton _kidFriendlyButton = new JoystickButton(_onboardStick, 2);
     
-    private final PowerScaler _tankDriveScaler;
+    private final PowerScaler _driveScaler;
+    private final PowerScaler _rotationScaler;
     
     public OI() {
         
         //_gearShiftButton.whenPressed(new );
         
         // use power scaling from traction mode on 2014 bot //
-        _tankDriveScaler = new PowerScaler(new PowerScaler.PowerPoint[] {
+        _driveScaler = new PowerScaler(new PowerScaler.PowerPoint[] {
                 new PowerScaler.PowerPoint(0.0, 0.0),
                 new PowerScaler.PowerPoint(0.05, 0.0),
-                new PowerScaler.PowerPoint(0.80, 1.0)
+                new PowerScaler.PowerPoint(0.75, 0.5),
+                new PowerScaler.PowerPoint(0.90, 1.0)
+            });
+        
+        _rotationScaler = new PowerScaler(new PowerScaler.PowerPoint[] {
+                new PowerScaler.PowerPoint(0.0, 0.0),
+                new PowerScaler.PowerPoint(0.05, 0.0),
+                new PowerScaler.PowerPoint(0.75, 0.65),
+                new PowerScaler.PowerPoint(0.9, 1.0)
             });
         
         _onboardDriveButton.whenPressed(new OnboardOperateTankDrive(false));
@@ -59,8 +68,20 @@ public class OI {
         return _onboardStick;
     }
     
-    public PowerScaler getTankDriveScaler() {
-        return _tankDriveScaler;
+    public PowerScaler getDriveScaler() {
+        return _driveScaler;
     }
+    
+    public PowerScaler getRotationScaler() {
+        return _rotationScaler;
+    }
+    
+    /**
+     * 
+     * @return from 0.0 to 1.0
+     */
+    public double getVariableDrivePower()  {
+        return (1 - _onboardStick.getThrottle()) / 2;
+    }
+    
 }
-
