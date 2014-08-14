@@ -18,8 +18,6 @@ public class OnboardOperateTankDrive extends CommandBase {
     private static final double MAXROTDELTA = 1.0 / 25;
     
     private final boolean _kidFriendly;
-    private double _lastMag = 0.0;
-    private double _lastRot = 0.0;
     
     public OnboardOperateTankDrive() {
         this(false);
@@ -42,33 +40,21 @@ public class OnboardOperateTankDrive extends CommandBase {
         drivetrain.setHighGear(oi.getOnboardGearShiftButton().get());
         
         // signal conditioning //
-        /*PowerScaler scale = oi.getTankDriveScaler();
-        if(scale != null) {
-            mag = scale.get(mag);
-            rot = scale.get(rot);
-        }*/
+        PowerScaler magScale = oi.getDriveScaler();
+        PowerScaler rotScale = oi.getRotationScaler();
+        if(magScale != null) {
+            mag = magScale.get(mag);
+        }
+        if(magScale != null) {
+            rot = rotScale.get(rot);
+        }
         if(_kidFriendly)  {
             mag *= KIDMAG;
             rot *= KIDROT;
         }
         else {
-            double magDelta = mag - _lastMag;
-            double rotDelta = rot - _lastRot;
-            if(magDelta > MAXMAGDELTA) {
-                mag = _lastMag + MAXMAGDELTA;
-            }
-            else if(magDelta < -MAXMAGDELTA) {
-                mag = _lastMag - MAXMAGDELTA;
-            }
-            if(rotDelta > MAXROTDELTA) {
-                rot = _lastRot + MAXROTDELTA;
-            }
-            else if(rotDelta < -MAXROTDELTA) {
-                rot = _lastRot - MAXROTDELTA;
-            }
-            //System.out.println(mag + " , " + magDelta + " , " + _lastMag);
-            _lastMag = mag;
-            _lastRot = rot;
+            // Detune steering sensitivity based on magnitude
+            rot /= (1 + Math.abs(mag));
         }
         
         if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
