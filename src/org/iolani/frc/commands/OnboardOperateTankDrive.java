@@ -37,7 +37,7 @@ public class OnboardOperateTankDrive extends CommandBase {
         double mag = oi.getOnboardStick().getY();
         double rot = oi.getOnboardStick().getX();
         
-        drivetrain.setHighGear(oi.getOnboardGearShiftButton().get());
+        //drivetrain.setHighGear(oi.getOnboardGearShiftButton().get());
         
         // signal conditioning //
         PowerScaler magScale = oi.getDriveScaler();
